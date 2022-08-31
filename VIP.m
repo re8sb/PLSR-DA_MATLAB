@@ -1,4 +1,4 @@
-function [vipScore,vipNames] = VIP(stats,XLoading,YLoading,XScore,varNames,palette,YDataLabel)
+function [vipScore,vipNames] = VIP(stats,XLoading,YLoading,XScore,varNames,palette,whichScores,plotThresh)
 %% PLSR framework, Dolatshahi Lab
 %% Author: Remziye Erdogan, 6/25/2021
 %This function calculates and plots the VIP scores for each variable, then
@@ -12,25 +12,30 @@ function [vipScore,vipNames] = VIP(stats,XLoading,YLoading,XScore,varNames,palet
 %XScore: Scores of the observations in X along LV1 and LV2.
 %varNames: A cell array containing variable names.
 %palette: Colors for plotting specified in PLSR_plot.m.
+%whichScores: if 'all', plots all VIP scores. if 'thresh', plots only VIP
+%scores > 'plotThresh'.
+%plotThresh: if whichScores == 'thresh', only plot VIP scores greater than
+%this value.
 
 %Calculate VIP scores:
 W0 = stats.W ./ sqrt(sum(stats.W.^2,1));
 p = size(XLoading,1);
 sumSq = sum(XScore.^2,1).*sum(YLoading.^2,1);
 
+if strcmp(whichScores,'all')
 % plot all VIP scores
-[vipScore,idx] = sort(sqrt(p* sum(sumSq.*(W0.^2),2) ./ sum(sumSq,2)),'ascend');
-vipNames = varNames(idx);
-XLoading = XLoading(idx);
-
-% %keep only vipScore > 1 for plotting
-% [vipScore,idx] = sort(sqrt(p* sum(sumSq.*(W0.^2),2) ./ sum(sumSq,2)),'ascend');
-% vipNames = varNames(idx);
-% XLoading = XLoading(idx);
-% vipNames = vipNames(abs(vipScore) > 1);
-% XLoading = XLoading(abs(vipScore) > 1);
-% vipScore = vipScore(abs(vipScore) > 1);
-
+    [vipScore,idx] = sort(sqrt(p* sum(sumSq.*(W0.^2),2) ./ sum(sumSq,2)),'ascend');
+    vipNames = varNames(idx);
+    XLoading = XLoading(idx);
+elseif strcmp(whichScores,'thresh')
+    % %keep only vipScore > 1 for plotting
+    [vipScore,idx] = sort(sqrt(p* sum(sumSq.*(W0.^2),2) ./ sum(sumSq,2)),'ascend');
+    vipNames = varNames(idx);
+    XLoading = XLoading(idx);
+    vipNames = vipNames(abs(vipScore) > plotThresh);
+    XLoading = XLoading(abs(vipScore) > plotThresh);
+    vipScore = vipScore(abs(vipScore) > plotThresh);
+end
 %On which LV would you like to base the color/direction of yout your VIP scores bar graph?
 which_LV = 1;
 

@@ -36,9 +36,16 @@ if strcmp(PLSR_or_PLSDA,'PLSR')
 
 % if this is called in PLSDA analysis, define color groups separately
 elseif strcmp(PLSR_or_PLSDA,'PLSDA')
+    mean_group1 = mean(XScore(1:length(XScore)/2,1));
+    mean_group2 = mean(XScore((length(XScore)/2+1):end,1));
 %     clrs=[219, 164, 110;112, 93, 73]/255; %(dark color, light color)
-    clrs = [palette(2,:);palette(1,:)];
-
+    if mean_group1<mean_group2
+        clrs = [palette(2,:);palette(1,:)];
+    
+    else
+        clrs = [palette(1,:);palette(2,:)];
+    
+    end
 gscatter(XScore(:,1),XScore(:,2),categorical(Y(:,1)),clrs,[],30, 'MarkerEdgeColor' ,'k');    
 xlabel(append('LV1',' (X_{var} = ',num2str(100*PCTVAR(1,1),'%.0f'),'%, Y_{var} = ',num2str(100*PCTVAR(2,1),'%.0f'),'%)')); 
     ylabel(append('LV2',' (X_{var} = ',num2str(100*PCTVAR(1,2),'%.0f'),'%, Y_{var} = ',num2str(100*PCTVAR(2,2),'%.0f'),'%)')); 

@@ -1,4 +1,4 @@
-function model = PLSR_main(X,Y,ncomp,varNames,preprocessed,ortho,cv_style,nperm,yDataLabel)
+function model = PLSR_main(X,Y,ncomp,varNames,ortho,cv_style,nperm,yDataLabel)
 %% PLSR framework, Dolatshahi Lab
 %% Author: Remziye Erdogan, 6/25/2021
 %This script performs PLS-R using the MATLAB built-in function,
@@ -9,7 +9,6 @@ function model = PLSR_main(X,Y,ncomp,varNames,preprocessed,ortho,cv_style,nperm,
 %CV. The user can choose from the following CV options using the 'cv_style' input:
         %K-fold CV with 'k' folds: {'k-fold',k}; 
         %Leave-one-out CV: {'loo'};
-        %Venetian blinds CV: {[],[]}; (Work in progress)
 %The function then runs a permutation test with 'nperm' permutations to
 %test if the model accuracy score is a real effect or due to random chance.
 %
@@ -25,10 +24,7 @@ function model = PLSR_main(X,Y,ncomp,varNames,preprocessed,ortho,cv_style,nperm,
 % ortho = 'yes' or 'no': do you want your data to be orthogonalized before
 % fitting a model? If 'yes', OPLS.m will be called and filtered X data will
 % be used as input to plsregress.
-% preprocessed = 'yes' or 'no': is your data already preprocessed (centered
-% and scaled)? If 'no', preprocessing will be run, including centering and
-% scaling and converting from a table to array, if need be.
-%
+
 %OUTPUTS:
 % model = a structure with the following fields:
     %XLoadings,YLoadings = predictor and response loadings
@@ -46,56 +42,28 @@ function model = PLSR_main(X,Y,ncomp,varNames,preprocessed,ortho,cv_style,nperm,
     %varNames = names of the variables in X
 
 close all;
-%% Import data and optional pre-processing
-%     X_pre_z = X; %X_pre_z is pre z-scored X data
-%     X = zscore(X); Y = zscore(Y);
-if strcmp(preprocessed,'no')
+%% Import data and optional LASSO-feature selection
+X_pre_z = X; %X_pre_z is pre z-scored X data
+X = zscore(X); Y = zscore(Y);
 
-    %if X and Y are tables, extract variable names and convert them to
-    %arrays
-%     if class(X)=='table'
-%         varNames = X.Properties.VariableNames;
-%         X = table2array(X);
-%     end
-%     if class(Y)=='table'
-%         Y = table2array(Y);
-%     end
-
-    %center and scale data
-    X = zscore(X); Y = zscore(Y);
-
-% tuning parameter selected using 5 fold cross validation
-% repeat feature selection 100 times, only use features selected more than
-% 80% of the time
-lasso_feat = [];
-for n = 1:100
-    [b,fitInfo] = lasso(X,Y(:,1),'CV',5);
-    [minMSE,idx] = min(fitInfo.MSE);
-    lasso_feat = [lasso_feat; varNames(any(b(:,idx),2))];
-end
-%identify which LASSO features are selected, and how many times each was
-%selected. Select the features that show up more than 80% of the time for
-%downstream PLSDA model construction.
-[unique_lasso_feat, ~, J]=unique(lasso_feat);
-% varNames = unique_lasso_feat;
-occ = histc(J, 1:numel(unique_lasso_feat));
-[~,ia,~] = intersect(varNames,unique_lasso_feat(occ>50));
-% [~,ia,~] = intersect(varNames,unique_lasso_feat);
-X = X(:,ia); %subset X to only contain LASSO-selected features
-varNames = varNames(ia)';
-% varNames = unique_lasso_feat;
+if strcmp(LASSO,'yes')
+   lasso_feat = [];
+    for n = 10
+        [b,fitInfo] = lasso(X,Y(:,1),'CV',10);
+        [minMSE(n),idx] = min(fitInfo.MSE);
+        lasso_feat(:,n) = b(:,idx);
+    end
+    [~,idx]=min(minMSE);
+    varNames = varNames_old(any(lasso_feat(:,idx),2));
+    [~,ia,~] = intersect(varNames_old,varNames);
+    X = X(:,ia); %subset X to only contain LASSO-selected features
+    X_pre_z = X_pre_z(:,ia); %subset X_pre_z to only LASSO-selected features
 end
 %% Orthogonal Projection to Latent Structures (OPLS)
 if strcmp(ortho,'yes')
     tol = 0.00001;
     [X_filt] = OPLS(X,Y,tol);
     X = X_filt; %set X as the orthogonalized/filtered data
-
-    % given a new data matrix to predict, apply the weights and loadings
-    % corrected with the OSC filter
-%         [nx,nw,np,nt] = osccalc(X,Y,10,[],[]);
-%         X = nx;
-    %     newx = nx - nx*nw*inv(np'*nw)*np';
 end
 %% Perform PLSR and cross-validation
 clear TSS;
@@ -110,7 +78,6 @@ if strcmp(cv_style{1},'kfold')
 elseif strcmp(cv_style{1},'loo')
     cvp = cvpartition(height(X),'Leaveout');  
     
-elseif strcmp(cv_style{1},'venetian')
 end   
 
 %calculate total sum of squares (TSS)
@@ -123,7 +90,6 @@ Q2 = [0 1-length(Y)*MSE(2,2:end)/TSS]; [Q2max,Q2idx] = max(Q2);
 R2 = [0 cumsum(PCTVAR(2,:))];
 
 %% Perform a permutation test and report the p-value
-k_fold = 5;
 p_perm = permtest(X,Y,ncomp,nperm,cvp,'empirical','PLSR');
 
 %% Write output data structure

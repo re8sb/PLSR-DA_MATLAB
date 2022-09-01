@@ -1,4 +1,4 @@
-function loadings_plot(XLoading,varNames,nLVs,palette)
+function loadings_plot(XLoading,varNames,nLVs,palette,PLSR_or_PLSDA)
 %% PLSR framework, Dolatshahi Lab
 %% Author: Remziye Erdogan, 6/25/2021
 %This function plots the X loadings of each variable on LV1 and LV2 as a pair
@@ -36,7 +36,11 @@ ytickangle(45)
 %If the user specifies nLVs = 1, then don't subplot, and just plot the LV1
 %loadings.
 elseif nLVs == 1
-    XL_LV1 = sortrows(table(varNames,XLoading(:,1)'),'Var2','ascend');
+    if strcmp(PLSR_or_PLSDA,'PLSR')
+        XL_LV1 = sortrows(table(varNames,XLoading(:,1)'),'Var2','ascend');
+    elseif strcmp(PLSR_or_PLSDA,'PLSDA')
+        XL_LV1 = sortrows(table(varNames,XLoading(:,1)),'Var2','ascend');
+    end
     XL_LV1.Properties.VariableNames = {'Variable','Loading'};
     figure; b = barh(table2array(XL_LV1(:,2)),'facecolor',palette(1,:)); title('Loadings on LV1','fontsize',14)
 yticks([1:length(XL_LV1.Variable)]); 

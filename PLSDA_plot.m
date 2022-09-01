@@ -18,7 +18,7 @@ palette = [68 210 242; 81 127 245]/255;
 
 
 %% loadings bar graph 
-loadings_plot(model.XLoading,model.varNames,1,palette);
+loadings_plot(model.XLoading,model.varNames,1,palette,'PLSDA');
 %% VIP score calculation and plot
 [vipScores,vipNames]=VIP(model.stats,model.XLoading,model.YLoading,model.XScore,model.varNames,palette,'all',[]);
 %% scores plot (check name of model.CV_acc)

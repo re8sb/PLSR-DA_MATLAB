@@ -25,7 +25,7 @@ palette =[90 66 56;255 190 143]/255;
 PLSR_or_PLSDA = 'PLSR';
 scores_plot(PLSR_or_PLSDA,model.XScore,model.PCTVAR,model.Ydata,YDataLabel,model.Q2,model.p_perm,[]);
 %% loadings bar graph 
-% loadings_plot(model.XLoading,model.varNames,1,palette);
+% loadings_plot(model.XLoading,model.varNames,1,palette,'PLSR');
 %% VIP score bar graph
 VIP(model.stats,model.XLoading,model.YLoading,model.XScore,model.varNames,palette,'all',[]);
 end

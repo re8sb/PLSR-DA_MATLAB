@@ -15,11 +15,9 @@ function model = PLSR_main(X,Y,ncomp,varNames,ortho,cv_style,nperm,yDataLabel)
 %Model inputs and outputs are summarized in more detail below:
 %
 %INPUTS:
-% X = X data, an nxm table or array of m variables/predictors and n observations 
+% X = X data, an nxm array of m variables/predictors and n observations 
 % Y = Y data, an nx1 table or array of n observations and a univariate outcome
-% varNames = names of the variables in X. If X is a table, varNames can
-% be extracted from the column names of X if the input "preprocessed" is
-% set to 'no'.
+% varNames = names of the variables in X, s
 % cv_style = specify the style of cross validation (k_fold, loo)
 % ortho = 'yes' or 'no': do you want your data to be orthogonalized before
 % fitting a model? If 'yes', OPLS.m will be called and filtered X data will

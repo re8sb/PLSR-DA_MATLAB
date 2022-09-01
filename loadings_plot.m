@@ -36,7 +36,7 @@ ytickangle(45)
 %If the user specifies nLVs = 1, then don't subplot, and just plot the LV1
 %loadings.
 elseif nLVs == 1
-    XL_LV1 = sortrows(table(varNames,XLoading(:,1)),'Var2','ascend');
+    XL_LV1 = sortrows(table(varNames,XLoading(:,1)'),'Var2','ascend');
     XL_LV1.Properties.VariableNames = {'Variable','Loading'};
     figure; b = barh(table2array(XL_LV1(:,2)),'facecolor',palette(1,:)); title('Loadings on LV1','fontsize',14)
 yticks([1:length(XL_LV1.Variable)]); 

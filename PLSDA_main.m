@@ -15,7 +15,7 @@ function model = PLSDA_main(X,Y,ncomp,varNames,LASSO,ortho,cv_style,nperm,catego
 %Model inputs and outputs are summarized in more detail below:
 %
 %INPUTS:
-% X = X data, an nxm table or array of m variables/predictors and n
+% X = X data, an nxm array of m variables/predictors and n
 % observations (raw data acceptable).
 % Y = Y data, an nxp table or array of n observations and p discriminate
 % groups, defined as logical columns with value '1' if that observation is
@@ -23,7 +23,7 @@ function model = PLSDA_main(X,Y,ncomp,varNames,LASSO,ortho,cv_style,nperm,catego
 % varNames = names of the variables in X. If X is a table, varNames can
 % be extracted from the column names of X if the input "preprocessed" is
 % set to 'no'.
-% cv_style = specify the style of cross validation (k_fold, loo)
+% cv_style = specify the style of cross validation (kfold, loo)
 % LASSO = would you like to perform LASSO feature selection?
 % ortho = 'yes' or 'no': do you want your data to be orthogonalized before
 % fitting a model? If 'yes', OPLS.m will be called and filtered X data will
@@ -57,7 +57,7 @@ if strcmp(LASSO,'yes')
 
 varNames_old = varNames;
 clear lasso_feat b fitInfo minMSE minMSE_Lambda
-for n = 10
+for n = 1:10
     n
     [b,fitInfo] = lasso(X,Y(:,1),'CV',10);
     [minMSE(n),idx] = min(fitInfo.MSE);

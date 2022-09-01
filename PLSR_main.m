@@ -1,4 +1,4 @@
-function model = PLSR_main(X,Y,ncomp,varNames,ortho,cv_style,nperm,yDataLabel)
+function model = PLSR_main(X,Y,ncomp,varNames,LASSO,ortho,cv_style,nperm,yDataLabel)
 %% PLSR framework, Dolatshahi Lab
 %% Author: Remziye Erdogan, 6/25/2021
 %This script performs PLS-R using the MATLAB built-in function,
@@ -7,7 +7,7 @@ function model = PLSR_main(X,Y,ncomp,varNames,ortho,cv_style,nperm,yDataLabel)
 %Model cross-validation (CV) is performed using built-in CV option
 %of 'plsregress', and the mean squared error (MSE) is reported after
 %CV. The user can choose from the following CV options using the 'cv_style' input:
-        %K-fold CV with 'k' folds: {'k-fold',k}; 
+        %K-fold CV with 'k' folds: {'kfold',k}; 
         %Leave-one-out CV: {'loo'};
 %The function then runs a permutation test with 'nperm' permutations to
 %test if the model accuracy score is a real effect or due to random chance.
@@ -15,15 +15,15 @@ function model = PLSR_main(X,Y,ncomp,varNames,ortho,cv_style,nperm,yDataLabel)
 %Model inputs and outputs are summarized in more detail below:
 %
 %INPUTS:
-% X = X data, an nxm table or array of m variables/predictors and n observations 
-% Y = Y data, an nx1 table or array of n observations and a univariate outcome
-% varNames = names of the variables in X. If X is a table, varNames can
-% be extracted from the column names of X if the input "preprocessed" is
-% set to 'no'.
-% cv_style = specify the style of cross validation (k_fold, loo)
+% X = X data, an [nxm] array of m variables/predictors and n observations 
+% Y = Y data, an [nx1] table or array of n observations and a univariate outcome
+% varNames = names of the variables in X, specified as an {1xm} cell array.
+% cv_style = specify the style of cross validation (kfold, loo)
 % ortho = 'yes' or 'no': do you want your data to be orthogonalized before
 % fitting a model? If 'yes', OPLS.m will be called and filtered X data will
 % be used as input to plsregress.
+% nperm = number of null models (permutations) to run.
+% yDataLabel = A name for the Y variable, specified as a 'string'.
 
 %OUTPUTS:
 % model = a structure with the following fields:
@@ -46,9 +46,11 @@ close all;
 X_pre_z = X; %X_pre_z is pre z-scored X data
 X = zscore(X); Y = zscore(Y);
 
+varNames_old = varNames;
+clear lasso_feat b fitInfo minMSE minMSE_Lambda
 if strcmp(LASSO,'yes')
    lasso_feat = [];
-    for n = 10
+    for n = 1:10
         [b,fitInfo] = lasso(X,Y(:,1),'CV',10);
         [minMSE(n),idx] = min(fitInfo.MSE);
         lasso_feat(:,n) = b(:,idx);

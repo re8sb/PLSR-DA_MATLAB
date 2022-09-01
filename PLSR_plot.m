@@ -27,6 +27,6 @@ scores_plot(PLSR_or_PLSDA,model.XScore,model.PCTVAR,model.Ydata,YDataLabel,model
 %% loadings bar graph 
 % loadings_plot(model.XLoading,model.varNames,1,palette);
 %% VIP score bar graph
-VIP(model.stats,model.XLoading,model.YLoading,model.XScore,model.varNames,palette,YDataLabel);
+VIP(model.stats,model.XLoading,model.YLoading,model.XScore,model.varNames,palette,'all',[]);
 end
 

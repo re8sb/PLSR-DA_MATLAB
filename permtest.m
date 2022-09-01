@@ -39,8 +39,6 @@ function p = permtest(X,Y,ncomp,nperm,cvp,stat_test,PLSR_or_PLSDA)
 %calculated by the permutation test compared to the actual MSE value
 %(MSE0), which is indicated by a red '*'.
 
-% c = cvpartition(height(X),'Kfold',cvp);
-
 %run nperm permutations and save the MSE values to 'MSE_rand'
 if strcmp(PLSR_or_PLSDA,'PLSR')
     %compute the actual MSE
@@ -58,6 +56,7 @@ if strcmp(PLSR_or_PLSDA,'PLSR')
         Q2_rand(n) = 1-length(Y)*MSE_rand(n)/TSS(1);
     end
     metric = MSE0; metric_rand = MSE_rand;
+    CV_accuracy = 0;
 end
 
 if strcmp(PLSR_or_PLSDA,'PLSDA')
@@ -102,7 +101,6 @@ elseif strcmp(stat_test,'empirical')
 %         end
     end
 end
-% end
 
 %plot the histogram of MSEs, and report p-value in the title
 figure; 

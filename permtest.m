@@ -1,4 +1,4 @@
-function p = permtest(X,Y,ncomp,nperm,cvp,stat_test,PLSR_or_PLSDA)
+function p = permtest(X,Y,ncomp,nperm,cvp,stat_test,PLSR_or_PLSDA,CV_accuracy)
 %% PLSR framework, Dolatshahi Lab
 %% Author: Remziye Erdogan, 6/25/2021
 %This function runs a permutation test of the cross-validated model
@@ -60,16 +60,16 @@ if strcmp(PLSR_or_PLSDA,'PLSR')
 end
 
 if strcmp(PLSR_or_PLSDA,'PLSDA')
-    [XLoading,YLoading,XScore,YScore,BETA,PCTVAR,MSE,stats] = plsregress(X,Y,ncomp,'cv',cvp);
-    Y_predicted = [ones(size(X,1),1) X]*BETA;
-    Y_predicted(Y_predicted<0.5) = 0; Y_predicted(Y_predicted>=0.5) = 1;
-    correct = 0;
-    for i = 1:length(Y)
-        if Y(i) == Y_predicted(i)
-            correct = correct + 1;
-        end
-    end
-    CV_accuracy = correct/length(Y)*100;
+%     [XLoading,YLoading,XScore,YScore,BETA,PCTVAR,MSE,stats] = plsregress(X,Y,ncomp,'cv',cvp);
+%     Y_predicted = [ones(size(X,1),1) X]*BETA;
+%     Y_predicted(Y_predicted<0.5) = 0; Y_predicted(Y_predicted>=0.5) = 1;
+%     correct = 0;
+%     for i = 1:length(Y)
+%         if Y(i) == Y_predicted(i)
+%             correct = correct + 1;
+%         end
+%     end
+%     CV_accuracy = correct/length(Y)*100;
 
     for n = 1:nperm
         Y_rand = Y(randperm(height(Y)))';

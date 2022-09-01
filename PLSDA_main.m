@@ -112,7 +112,7 @@ for i = 1:length(Y)
 end
 CV_accuracy = correct/length(Y)*100; %correct classification rate
 %% permutation testing 
-p_perm = permtest(X,Y,ncomp,nperm,cvp,'empirical','PLSDA');
+p_perm = permtest(X,Y,ncomp,nperm,cvp,'empirical','PLSDA',CV_accuracy);
 
 %% write output structure
 model.Xdata = X;

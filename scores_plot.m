@@ -36,7 +36,7 @@ if strcmp(PLSR_or_PLSDA,'PLSR')
 
 % if this is called in PLSDA analysis, define color groups separately
 elseif strcmp(PLSR_or_PLSDA,'PLSDA')
-    mean_group1 = mean(XScore(1:ceiling(length(XScore))/2,1));
+    mean_group1 = mean(XScore(1:ceil(length(XScore))/2,1));
     mean_group2 = mean(XScore((floor(length(XScore))/2+1):end,1));
 %     clrs=[219, 164, 110;112, 93, 73]/255; %(dark color, light color)
     if mean_group1<mean_group2

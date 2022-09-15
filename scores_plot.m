@@ -40,10 +40,10 @@ elseif strcmp(PLSR_or_PLSDA,'PLSDA')
     mean_group2 = mean(XScore((floor(length(XScore))/2+1):end,1));
 %     clrs=[219, 164, 110;112, 93, 73]/255; %(dark color, light color)
     if mean_group1<mean_group2
-        clrs = [palette(2,:);palette(1,:)];
+        clrs = [palette(1,:);palette(2,:)];
     
     else
-        clrs = [palette(1,:);palette(2,:)];
+        clrs = [palette(2,:);palette(1,:)];
     
     end
 gscatter(XScore(:,1),XScore(:,2),categorical(Y(:,1)),clrs,[],30, 'MarkerEdgeColor' ,'k');    
@@ -55,7 +55,7 @@ title({append('X scores',' (CV acc. = ',num2str(Q2,'%.0f'),'%)');...
         append('p = ',num2str(p_perm,'%.3f'))}); set(gca,'fontsize',16); 
 
 %     colormap copper(2); colormap(flipud(copper)); 
-    legend(categories{1},categories{2},'location','northeast')
+    legend(categories{2},categories{1},'location','northeast')
 end
 %c.Direction = 'reverse';
 

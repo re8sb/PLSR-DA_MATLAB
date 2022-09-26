@@ -1,4 +1,4 @@
-function [vipScore,vipNames] = VIP(stats,XLoading,YLoading,XScore,varNames,palette,whichScores,plotThresh)
+function [vipScore,vipNames] = VIP(stats,XLoading,YLoading,XScore,varNames,palette,whichScores,plotThresh,Y)
 %% PLSR framework, Dolatshahi Lab
 %% Author: Remziye Erdogan, 6/25/2021
 %This function calculates and plots the VIP scores for each variable, then
@@ -40,7 +40,20 @@ end
 which_LV = 1;
 
 %Define the colors to use for pos/neg loadings.
-color_pos = palette(1,:); color_neg = palette(2,:);
+%color_pos = palette(1,:); color_neg = palette(2,:);
+
+mean_group1 = mean(XScore(Y(:,1)==1));
+mean_group2 = mean(XScore(Y(:,1)==0));
+
+if mean_group1<mean_group2
+    color_neg = palette(2,:); color_pos = palette(1,:);
+
+else
+    color_pos = palette(2,:); color_neg = palette(1,:);
+
+end
+
+
 figure;
 
 %Plot dotted lines at X = +/-1, the threshold for determining VIP score

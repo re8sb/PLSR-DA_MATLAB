@@ -67,6 +67,7 @@ end
 [~,idx]=min(minMSE);
 varNames = varNames_old(any(lasso_feat(:,idx),2));
 [~,ia,~] = intersect(varNames_old,varNames);
+varNames = varNames_old(ia); %reorders varNames to match order in X
 X = X(:,ia); %subset X to only contain LASSO-selected features
 X_pre_z = X_pre_z(:,ia); %subset X_pre_z to only LASSO-selected features
 end

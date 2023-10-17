@@ -57,17 +57,18 @@ if strcmp(LASSO,'yes')
 
 varNames_old = varNames;
 clear lasso_feat b fitInfo minMSE minMSE_Lambda
-for n = 1:10
+for n = 1:100
     n
     [b,fitInfo] = lasso(X,Y(:,1),'CV',10);
     [minMSE(n),idx] = min(fitInfo.MSE);
     lasso_feat(:,n) = b(:,idx);
 %     lasso_feat = [lasso_feat; varNames(any(b(:,idx),2))];
 end
-[~,idx]=min(minMSE);
-varNames = varNames_old(any(lasso_feat(:,idx),2));
+% [~,idx]=min(minMSE);
+varNames = varNames_old(sum(logical(lasso_feat),2)>=0.5*n);
+% varNames = varNames_old(any(lasso_feat(:,idx),2));
 [~,ia,~] = intersect(varNames_old,varNames);
-varNames = varNames_old(ia); %reorders varNames to match order in X
+% varNames = varNames_old(ia); %reorders varNames to match order in X
 X = X(:,ia); %subset X to only contain LASSO-selected features
 X_pre_z = X_pre_z(:,ia); %subset X_pre_z to only LASSO-selected features
 end

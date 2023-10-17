@@ -76,7 +76,9 @@ if strcmp(PLSR_or_PLSDA,'PLSDA')
         clear XLoading YLoading XScore YScore BETA PCTVAR MSE stats Q2;
         [XLoading,YLoading,XScore,YScore,BETA,PCTVAR,MSE,stats] = plsregress(X,Y_rand,ncomp,'cv',cvp);
         Y_predicted = [ones(size(X,1),1) X]*BETA;
-        Y_predicted(Y_predicted<0.5) = 0; Y_predicted(Y_predicted>=0.5) = 1;
+        % Y_predicted(Y_predicted<0.5) = 0; Y_predicted(Y_predicted>=0.5) = 1;
+        Y_predicted = round(Y_predicted);
+
         correct = 0;
         for i = 1:length(Y)
             if Y_rand(i) == Y_predicted(i)

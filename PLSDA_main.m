@@ -103,7 +103,9 @@ R2 = [0 cumsum(PCTVAR(2,:))];
 %predicted Y categories based on the cross-validated model
 Y_predicted = [ones(size(X,1),1) X]*BETA;
 %if prediction < 0.5, make it a logical 0; if > 0.5, make it a logical 1
-Y_predicted(Y_predicted<0.5) = 0; Y_predicted(Y_predicted>=0.5) = 1;
+% Y_predicted(Y_predicted<0.5) = 0; Y_predicted(Y_predicted>=0.5) = 1;
+%multiclass --> round predictions to 1, 2, or 3
+Y_predicted = round(Y_predicted);
 
 correct = 0;
 for i = 1:length(Y)

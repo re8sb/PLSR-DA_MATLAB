@@ -132,5 +132,6 @@ model.varNames = varNames;
 model.stats = stats;
 model.MSE = MSE(2,ncomp+1);
 model.XpreZ = X_pre_z;
+
 %% plot results (scores plot, loadings plot, VIP scores)
-[model.vipScores,model.vipNames,model.pAdjBH, model.indAccBH] = PLSDA_plot(model,categories)
+[model.vipScores,model.vipNames,model.pAdjBH, model.indAccBH, model.univar_pvals] = PLSDA_plot(model,categories)

@@ -1,4 +1,4 @@
-function [vipScores,vipNames,pAdj,indAccepted]=PLSDA_plot(model,categories)
+function [vipScores,vipNames,pAdj,indAccepted,pvals]=PLSDA_plot(model,categories)
 %% PLSDA plotting, Dolatshahi Lab
 %% Author: Remziye Erdogan, 6/25/2021
 %INPUT:
@@ -25,5 +25,5 @@ loadings_plot(model.XLoading,model.varNames,1,palette,'PLSDA');
 PLSR_or_PLSDA = 'PLSDA';
 scores_plot(PLSR_or_PLSDA,model.XScore,model.PCTVAR,model.Ydata,model.CV_accuracy,model.CV_accuracy,model.p_perm,categories,palette);
 %% univariate plots
-[pAdj, indAccepted] = univar_plot(model.XpreZ,model.Ydata,categories,vipNames,vipScores,model.varNames);
+[pAdj, indAccepted, pvals] = univar_plot(model.XpreZ,model.Ydata,categories,vipNames,vipScores,model.varNames);
 end

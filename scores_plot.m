@@ -24,12 +24,15 @@ figure;
 
 %If this function is called in PLSR analysis, use a continuous color bar
 if strcmp(PLSR_or_PLSDA,'PLSR')
+    colorlow = [linspace(1, palette(2,1), 128)', linspace(1, palette(2,2), 128)', linspace(1, palette(2,3), 128)'];
+    colorhigh = [linspace(palette(1,1), 1, 128)', linspace(palette(1,2), 1, 128)', linspace(palette(1,3), 1, 128)'];
+    cmap = [colorhigh; colorlow]; 
     scatter(XScore(:,1),XScore(:,2),50,Y(:,1),'filled','markeredgecolor','k'); 
     xlabel(append('LV1',' (X_{var} = ',num2str(100*PCTVAR(1,1),'%.0f'),'%, Y_{var} = ',num2str(100*PCTVAR(2,1),'%.0f'),'%)')); 
     ylabel(append('LV2',' (X_{var} = ',num2str(100*PCTVAR(1,2),'%.0f'),'%, Y_{var} = ',num2str(100*PCTVAR(2,2),'%.0f'),'%)')); 
         title({append('X scores',' (Q^2 = ',num2str(Q2*100,'%.0f'),'%)');...
         append('p = ',num2str(p_perm,'%.3f'))}); set(gca,'fontsize',16); 
-    colormap copper; colormap(flipud(copper)); 
+    colormap(cmap); colormap(flipud(cmap)); 
 %     colormap summer; colormap(flipud(summer)); 
 
     c = colorbar('TickLabels',{},'Ticks',[]);  c.Label.String = YscaleLabel; c.Label.FontSize = 20;
@@ -40,10 +43,10 @@ elseif strcmp(PLSR_or_PLSDA,'PLSDA')
     mean_group2 = mean(XScore((floor(length(XScore))/2+1):end,1));
 %     clrs=[219, 164, 110;112, 93, 73]/255; %(dark color, light color)
     if mean_group1<mean_group2
-        clrs = [palette(1,:);palette(2,:)];
+        clrs = [palette(2,:);palette(1,:)];
     
     else
-        clrs = [palette(2,:);palette(1,:)];
+        clrs = [palette(1,:);palette(2,:)];
     
     end
 gscatter(XScore(:,1),XScore(:,2),categorical(Y(:,1)),clrs,[],30, 'MarkerEdgeColor' ,'k');    
@@ -51,11 +54,10 @@ xlabel(append('LV1',' (X_{var} = ',num2str(100*PCTVAR(1,1),'%.0f'),'%, Y_{var} =
     ylabel(append('LV2',' (X_{var} = ',num2str(100*PCTVAR(1,2),'%.0f'),'%, Y_{var} = ',num2str(100*PCTVAR(2,2),'%.0f'),'%)')); 
 %     xlabel(append('LV1',' (X_{var} = ',num2str(100*PCTVAR(1,1),'%.0f'),'%)')); 
 %     ylabel(append('LV2',' (X_{var} = ',num2str(100*PCTVAR(1,2),'%.0f'),'%)')); 
-title({append('X scores',' (CV acc. = ',num2str(Q2,'%.0f'),'%)');...
-        append('p = ',num2str(p_perm,'%.3f'))}); set(gca,'fontsize',16); 
+title(append('X scores',' (CV acc. = ',num2str(Q2,'%.0f'),'%',', p = ',num2str(p_perm,'%.3f'),')')); set(gca,'fontsize',16); 
 
 %     colormap copper(2); colormap(flipud(copper)); 
-    legend(categories{2},categories{1},'location','northeast')
+    legend(categories{1},categories{2},'location','northeast')
 end
 %c.Direction = 'reverse';
 

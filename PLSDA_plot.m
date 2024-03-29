@@ -30,7 +30,7 @@ PLSR_or_PLSDA = 'PLSDA';
 [vipScores,vipNames]=VIP(model.stats,model.XLoading,model.YLoading,model.XScore,model.varNames,palette,'all',[],model.Ydata,'PLSDA');
 % VIP(stats,XLoading,YLoading,XScore,varNames,palette,whichScores,plotThresh,Y,PLSR_or_PLSDA)
 %% univariate plots
-[pAdj, indAccepted,pVal] = univar_plot(model.XpreZ,model.Ydata,categories,vipNames,vipScores,model.varNames,palette);
+[pAdj, indAccepted,pvals] = univar_plot(model.XpreZ,model.Ydata,categories,vipNames,vipScores,model.varNames,palette);
 
 if model.ncomp == 2
 
@@ -39,14 +39,11 @@ loadings_plot(model.XLoading,model.varNames,1,palette,'PLSDA');
 
 %% scores plot (check name of model.CV_acc)
 PLSR_or_PLSDA = 'PLSDA';
-scores_plot(PLSR_or_PLSDA,model.XScore,model.PCTVAR,model.Ydata,model.CV_accuracy,model.CV_accuracy,model.p_perm,categories,palette);
-%% univariate plots
-[pAdj, indAccepted, pvals] = univar_plot(model.XpreZ,model.Ydata,categories,vipNames,vipScores,model.varNames);
-scores_plot(PLSR_or_PLSDA,model.XScore,model.PCTVAR,model.Ydata,model.CV_accuracy,model.p_perm,categories,palette);
+scores_plot(PLSR_or_PLSDA,model.XScore,model.PCTVAR,model.Ydata,[],model.CV_accuracy,model.p_perm,categories,palette);
 
 else
 
-plsda_biplot(model.XScore,model.PCTVAR,model.Ydata,categories,model.CV_accuracy,model.p_perm,palette,model.XLoading,model.varNames)
+PLSDA_biplot(model.XScore,model.PCTVAR,model.Ydata,categories,model.CV_accuracy,model.p_perm,palette,model.XLoading,model.varNames)
 
 end
 

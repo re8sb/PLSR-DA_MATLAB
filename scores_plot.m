@@ -39,17 +39,21 @@ if strcmp(PLSR_or_PLSDA,'PLSR')
 
 % if this is called in PLSDA analysis, define color groups separately
 elseif strcmp(PLSR_or_PLSDA,'PLSDA')
+    %this should work out the plot colors
     mean_group1 = mean(XScore(1:ceil(length(XScore))/2,1));
     mean_group2 = mean(XScore((floor(length(XScore))/2+1):end,1));
 %     clrs=[219, 164, 110;112, 93, 73]/255; %(dark color, light color)
     if mean_group1<mean_group2
         clrs = [palette(2,:);palette(1,:)];
-    
+
     else
         clrs = [palette(1,:);palette(2,:)];
-    
+
     end
-gscatter(XScore(:,1),XScore(:,2),categorical(Y(:,1)),clrs,[],30, 'MarkerEdgeColor' ,'k');    
+% gscatter(XScore(:,1),XScore(:,2),categorical(Y(:,1)),'o',clrs,[],30, 'MarkerEdgeColor' ,'k'); 
+scatter(XScore(Y(:,1)==1,1),XScore(Y(:,1)==1,2),'o','markerfacecolor',palette(1,:), 'MarkerEdgeColor' ,'k');hold on
+scatter(XScore(Y(:,1)==0,1),XScore(Y(:,1)==0,2),'o','markerfacecolor',palette(2,:), 'MarkerEdgeColor' ,'k');    
+
 xlabel(append('LV1',' (X_{var} = ',num2str(100*PCTVAR(1,1),'%.0f'),'%, Y_{var} = ',num2str(100*PCTVAR(2,1),'%.0f'),'%)')); 
     ylabel(append('LV2',' (X_{var} = ',num2str(100*PCTVAR(1,2),'%.0f'),'%, Y_{var} = ',num2str(100*PCTVAR(2,2),'%.0f'),'%)')); 
 %     xlabel(append('LV1',' (X_{var} = ',num2str(100*PCTVAR(1,1),'%.0f'),'%)')); 

@@ -1,4 +1,4 @@
-function model = PLSDA_main(X,Y,ncomp,varNames,LASSO,ortho,cv_style,nperm,categories)
+function model = PLSDA_main(X,Y,ncomp,varNames,LASSO,ortho,cv_style,nperm,categories,palette)
 %% PLSDA framework, Dolatshahi Lab
 %% Author: Remziye Erdogan, 6/15/2021
 %This script performs PLS-DA using the MATLAB built-in function,
@@ -28,6 +28,7 @@ function model = PLSDA_main(X,Y,ncomp,varNames,LASSO,ortho,cv_style,nperm,catego
 % ortho = 'yes' or 'no': do you want your data to be orthogonalized before
 % fitting a model? If 'yes', OPLS.m will be called and filtered X data will
 % be used as input to plsregress.
+% palette = an array of RGB color triplets to use for plotting (nx3)
 %
 %OUTPUTS:
 % model = a structure with the following fields:
@@ -132,6 +133,10 @@ model.varNames = varNames;
 model.stats = stats;
 model.MSE = MSE(2,ncomp+1);
 model.XpreZ = X_pre_z;
+<<<<<<< Updated upstream
 
+=======
+model.palette = palette;
+>>>>>>> Stashed changes
 %% plot results (scores plot, loadings plot, VIP scores)
 [model.vipScores,model.vipNames,model.pAdjBH, model.indAccBH, model.univar_pvals] = PLSDA_plot(model,categories)

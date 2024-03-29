@@ -56,6 +56,8 @@ if strcmp(PLSR_or_PLSDA,'PLSR')
         Q2_rand(n) = 1-length(Y)*MSE_rand(n)/TSS(1);
     end
     metric = MSE0; metric_rand = MSE_rand;
+        % metric = Q20; metric_rand = Q2_rand;
+
     CV_accuracy = 0;
 end
 
@@ -72,7 +74,7 @@ if strcmp(PLSR_or_PLSDA,'PLSDA')
 %     CV_accuracy = correct/length(Y)*100;
 
     for n = 1:nperm
-        Y_rand = Y(randperm(height(Y)))';
+        Y_rand = Y(randperm(height(Y)),:);
         clear XLoading YLoading XScore YScore BETA PCTVAR MSE stats Q2;
         [XLoading,YLoading,XScore,YScore,BETA,PCTVAR,MSE,stats] = plsregress(X,Y_rand,ncomp,'cv',cvp);
         Y_predicted = [ones(size(X,1),1) X]*BETA;
@@ -94,7 +96,7 @@ if strcmp(stat_test,'wilcoxon')
 elseif strcmp(stat_test,'empirical')
     if metric == CV_accuracy
         p = (length(find(metric_rand > metric))+1)/(nperm+1);
-    elseif metric == MSE0
+    elseif metric == Q20 | metric == MSE0
         p = (length(find(metric_rand < metric))+1)/(nperm+1);
 %         if p >= 0.9
 %             p = (length(find(abs(metric_rand) < abs(metric)))+1) / (nperm+1);

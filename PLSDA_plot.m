@@ -13,7 +13,7 @@ function [vipScores,vipNames,pAdj,indAccepted]=PLSDA_plot(model,categories)
 %VIP scores plot: A bar graph of VIP scores, colored by group.
 %red/blue palette:
 % palette = [68 210 242; 81 127 245]/255;
-palette = [0 1 1;1 0 0];
+palette = [1 0 0;0 1 1];
 
 %determine which group has the lowest mean Xscores value to assign colors.
 

@@ -42,16 +42,16 @@ which_LV = 1;
 %Define the colors to use for pos/neg loadings.
 %color_pos = palette(1,:); color_neg = palette(2,:);
 
-mean_group1 = mean(XScore(Y(:,1)==1));
-mean_group2 = mean(XScore(Y(:,1)==0));
-
-if mean_group1<mean_group2
+% mean_group1 = mean(XScore(Y(:,1)==1));
+% mean_group2 = mean(XScore(Y(:,1)==0));
+% 
+% if mean_group1<mean_group2
     color_neg = palette(2,:); color_pos = palette(1,:);
-
-else
-    color_pos = palette(2,:); color_neg = palette(1,:);
-
-end
+% 
+% else
+%     color_pos = palette(2,:); color_neg = palette(1,:);
+% 
+% end
 
 
 figure;

@@ -1,11 +1,13 @@
 %% Biplot
 %% This function creates a bioplot (combined scores and loadings plot) for a multiclass PLSDA model
+XScore = model_ga.XScore; PCTVAR = model_ga.PCTVAR; CV_accuracy = model_ga.CV_accuracy; p_perm = model_ga.p_perm;
 figure
-clrs = {'y','c','r'};
+% clrs = {'y','c','r'};
+clrs = [90 29 224; 27 92 224; 220 109 224]/255;
 xline(0,'handlevisibility','off');yline(0,'handlevisibility','off'); hold on
-scatter(XScore(Y==1,1),XScore(Y==1,2),50,'o','markerfacecolor',clrs{1}, 'MarkerEdgeColor' ,'k','markerfacealpha',0.5,'markeredgealpha',0.5);    
-scatter(XScore(Y==2,1),XScore(Y==2,2),50,'o','markerfacecolor',clrs{2}, 'MarkerEdgeColor' ,'k','markerfacealpha',0.5,'markeredgealpha',0.5);    
-scatter(XScore(Y==3,1),XScore(Y==3,2),50,'o','markerfacecolor',clrs{3}, 'MarkerEdgeColor' ,'k','markerfacealpha',0.5,'markeredgealpha',0.5);    
+scatter(XScore(Y==1,1),XScore(Y==1,2),50,'^','markerfacecolor',clrs(2,:), 'MarkerEdgeColor' ,'k','markerfacealpha',0.75,'markeredgealpha',0.5);    
+scatter(XScore(Y==2,1),XScore(Y==2,2),75,'s','markerfacecolor',clrs(1,:), 'MarkerEdgeColor' ,'k','markerfacealpha',0.75,'markeredgealpha',0.5);    
+scatter(XScore(Y==3,1),XScore(Y==3,2),50,'o','markerfacecolor',clrs(3,:), 'MarkerEdgeColor' ,'k','markerfacealpha',0.75,'markeredgealpha',0.5);    
 
 
 xlabel(append('LV1',' (X_{var} = ',num2str(100*PCTVAR(1,1),'%.0f'),'%, Y_{var} = ',num2str(100*PCTVAR(2,1),'%.0f'),'%)')); 
@@ -19,6 +21,7 @@ title(append('X scores',' (CV acc. = ',num2str(CV_accuracy,'%.0f'),'%, p = ',num
     legend(categories,'location','northeast')
 
 %% compute VIP scores (show features with VIP scores > 1 on loadings plot)
+stats.W = model_ga.stats.W; YLoading = model_ga.YLoading; XLoading = model_ga.XLoading; 
 W0 = stats.W ./ sqrt(sum(stats.W.^2,1));
 p = size(XLoading,1);
 sumSq = sum(XScore.^2,1).*sum(YLoading.^2,1);

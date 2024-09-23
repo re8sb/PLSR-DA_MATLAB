@@ -58,15 +58,16 @@ if strcmp(LASSO,'yes')
 
 varNames_old = varNames;
 clear lasso_feat b fitInfo minMSE minMSE_Lambda
-for n = 1:10
+for n = 1:100
     n
     [b,fitInfo] = lasso(X,Y(:,1),'CV',10);
     [minMSE(n),idx] = min(fitInfo.MSE);
     lasso_feat(:,n) = b(:,idx);
 %     lasso_feat = [lasso_feat; varNames(any(b(:,idx),2))];
 end
-[~,idx]=min(minMSE);
-varNames = varNames_old(any(lasso_feat(:,idx),2));
+% [~,idx]=min(minMSE);
+% varNames = varNames_old(any(lasso_feat(:,idx),2));
+varNames = varNames_old(sum(logical(lasso_feat),2)>=0.9*width(lasso_feat));
 [~,ia,~] = intersect(varNames_old,varNames);
 varNames = varNames_old(ia); %reorders varNames to match order in X
 X = X(:,ia); %subset X to only contain LASSO-selected features
@@ -97,6 +98,7 @@ TSS = sum((Y-mean(Y)).^2);
 [XLoading,YLoading,XScore,YScore,BETA,PCTVAR,MSE,stats] = plsregress(X,Y,ncomp,'cv',cvp);
 % Prediction accuracy based on cross validation
 Q2 = [0 1-length(Y)*MSE(2,2:end)/TSS]; [Q2max,Q2idx] = max(Q2);
+
 % Performance
 R2 = [0 cumsum(PCTVAR(2,:))];
 

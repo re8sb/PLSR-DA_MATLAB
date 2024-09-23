@@ -32,9 +32,16 @@ if strcmp(PLSR_or_PLSDA,'PLSR')
     ylabel(append('LV2',' (X_{var} = ',num2str(100*PCTVAR(1,2),'%.0f'),'%, Y_{var} = ',num2str(100*PCTVAR(2,2),'%.0f'),'%)')); 
         title({append('X scores',' (Q^2 = ',num2str(Q2*100,'%.0f'),'%)');...
         append('p = ',num2str(p_perm,'%.3f'))}); set(gca,'fontsize',16); 
+<<<<<<< Updated upstream
     colormap(cmap); colormap(flipud(cmap)); 
 %     colormap summer; colormap(flipud(summer)); 
 
+=======
+    colormap copper; colormap(flipud(copper)); 
+    maxscale = [linspace(palette(1,1), palette(2,1), 128)', linspace(palette(1,2), palette(2,2), 128)', linspace(palette(1,3), palette(2,3), 128)'];
+    minscale = [linspace(1, palette(1,1), 128)', linspace(1, palette(1,2), 128)', linspace(1, palette(1,3), 128)'];
+    cmap = [minscale;maxscale]; colormap(cmap);
+>>>>>>> Stashed changes
     c = colorbar('TickLabels',{},'Ticks',[]);  c.Label.String = YscaleLabel; c.Label.FontSize = 20;
 
 % if this is called in PLSDA analysis, define color groups separately
@@ -44,11 +51,19 @@ elseif strcmp(PLSR_or_PLSDA,'PLSDA')
     mean_group2 = mean(XScore((floor(length(XScore))/2+1):end,1));
 %     clrs=[219, 164, 110;112, 93, 73]/255; %(dark color, light color)
     if mean_group1<mean_group2
+<<<<<<< Updated upstream
         clrs = [palette(2,:);palette(1,:)];
 
     else
         clrs = [palette(1,:);palette(2,:)];
 
+=======
+        clrs = [palette(1,:);palette(2,:)];
+    
+    else
+        clrs = [palette(1,:);palette(2,:)];
+    
+>>>>>>> Stashed changes
     end
 % gscatter(XScore(:,1),XScore(:,2),categorical(Y(:,1)),'o',clrs,[],30, 'MarkerEdgeColor' ,'k'); 
 scatter(XScore(Y(:,1)==1,1),XScore(Y(:,1)==1,2),'o','markerfacecolor',palette(1,:), 'MarkerEdgeColor' ,'k');hold on

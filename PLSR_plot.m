@@ -1,4 +1,4 @@
-function PLSR_plot(model,YDataLabel)
+function PLSR_plot(model,YDataLabel,LASSO)
 %% PLSR plotting, Dolatshahi Lab
 %% Author: Remziye Erdogan, 6/25/2021
 %INPUT:
@@ -20,6 +20,7 @@ function PLSR_plot(model,YDataLabel)
 % palette =[32, 133, 51; 98 242 58; 167 219 64; 250 244 73; 232 203 56]/255;
 % palette for MATLAB COPPER colormap
 % palette =[90 66 56;255 190 143]/255;
+<<<<<<< Updated upstream
 mincolor = [249 119 72]/255; maxcolor = [249 240 172]/255;
 palette = [mincolor;maxcolor];
 % palette = [87 25 255;255 166 234]/255;
@@ -31,5 +32,28 @@ scores_plot(PLSR_or_PLSDA,model.XScore,model.PCTVAR,model.Ydata,YDataLabel,model
 % loadings_plot(model.XLoading,model.varNames,1,palette,'PLSR');
 %% VIP score bar graph
 VIP(model.stats,model.XLoading,model.YLoading,model.XScore,model.varNames,palette,'all',[],[],'PLSR');
+=======
+maxcolor = [119 104 250]/255; mincolor = [224 222 255]/255;
+% maxcolor = [249 119 72]/255; mincolor = [249 240 172]/255;
+
+palette = [mincolor;maxcolor];
+
+% figure; ax = gca;
+% imagesc(heatmap_data);
+% colormap(cmap); colorbar('Ticks',[])
+% colorbar('Ticks',[0.7 1.3],'TickLabels',{'Decrease','Increase'});
+
+%% scores plot 
+PLSR_or_PLSDA = 'PLSR';
+scores_plot(PLSR_or_PLSDA,model.XScore,model.PCTVAR,model.Ydata,YDataLabel,model.Q2,model.p_perm,[],palette);
+%% loadings bar graph 
+% loadings_plot(model.XLoading,model.varNames,1,palette,'PLSR');
+%% VIP score bar graph
+VIP(model.stats,model.XLoading,model.YLoading,model.XScore,model.varNames,palette,'all',[]);
+%% Correlates heatmap
+if strcmp(LASSO,'yes')
+    [model.rho,model.rho_pval]=correlatesHeatmap(model.X_pre_z_total,model.X_pre_z,model.varNames_old,model.varNames)
+end
+>>>>>>> Stashed changes
 end
 

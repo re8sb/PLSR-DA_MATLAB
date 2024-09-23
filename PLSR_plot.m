@@ -20,7 +20,9 @@ function PLSR_plot(model,YDataLabel)
 % palette =[32, 133, 51; 98 242 58; 167 219 64; 250 244 73; 232 203 56]/255;
 % palette for MATLAB COPPER colormap
 % palette =[90 66 56;255 190 143]/255;
-mincolor = [249 119 72]/255; maxcolor = [249 240 172]/255;
+% mincolor = [249 119 72]/255; maxcolor = [249 240 172]/255;
+maxcolor = [252 252 245]/255; mincolor = [124 80 80]/255;
+
 palette = [mincolor;maxcolor];
 % palette = [87 25 255;255 166 234]/255;
 %% scores plot 

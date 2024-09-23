@@ -96,7 +96,7 @@ TSS = sum((Y-mean(Y)).^2);
 %Call plsregess using the CV method defined above
 [XLoading,YLoading,XScore,YScore,BETA,PCTVAR,MSE,stats] = plsregress(X,Y,ncomp,'cv',cvp);
 % Prediction accuracy based on cross validation
-Q2 = [0 1-length(Y)*MSE(2,2:end)/TSS]; [Q2max,Q2idx] = max(Q2);
+% Q2 = [0 1-length(Y)*MSE(2,2:end)/TSS]; [Q2max,Q2idx] = max(Q2);
 % Performance
 R2 = [0 cumsum(PCTVAR(2,:))];
 

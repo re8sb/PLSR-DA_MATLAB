@@ -26,6 +26,7 @@ figure;
 if strcmp(PLSR_or_PLSDA,'PLSR')
     colorlow = [linspace(1, palette(2,1), 128)', linspace(1, palette(2,2), 128)', linspace(1, palette(2,3), 128)'];
     colorhigh = [linspace(palette(1,1), 1, 128)', linspace(palette(1,2), 1, 128)', linspace(palette(1,3), 1, 128)'];
+
     cmap = [colorhigh; colorlow]; 
     scatter(XScore(:,1),XScore(:,2),50,Y(:,1),'filled','markeredgecolor','k'); 
     xlabel(append('LV1',' (X_{var} = ',num2str(100*PCTVAR(1,1),'%.0f'),'%, Y_{var} = ',num2str(100*PCTVAR(2,1),'%.0f'),'%)')); 
@@ -33,7 +34,7 @@ if strcmp(PLSR_or_PLSDA,'PLSR')
         title({append('X scores',' (Q^2 = ',num2str(Q2*100,'%.0f'),'%)');...
         append('p = ',num2str(p_perm,'%.3f'))}); set(gca,'fontsize',16); 
     colormap(cmap); colormap(flipud(cmap)); 
-%     colormap summer; colormap(flipud(summer)); 
+    colormap pink; colormap(flipud(pink)); 
 
     c = colorbar('TickLabels',{},'Ticks',[]);  c.Label.String = YscaleLabel; c.Label.FontSize = 20;
 
@@ -51,8 +52,8 @@ elseif strcmp(PLSR_or_PLSDA,'PLSDA')
 
     end
 % gscatter(XScore(:,1),XScore(:,2),categorical(Y(:,1)),'o',clrs,[],30, 'MarkerEdgeColor' ,'k'); 
-scatter(XScore(Y(:,1)==1,1),XScore(Y(:,1)==1,2),'o','markerfacecolor',palette(1,:), 'MarkerEdgeColor' ,'k');hold on
-scatter(XScore(Y(:,1)==0,1),XScore(Y(:,1)==0,2),'o','markerfacecolor',palette(2,:), 'MarkerEdgeColor' ,'k');    
+scatter(XScore(Y(:,1)==1,1),XScore(Y(:,1)==1,2),10,'o','markerfacecolor',palette(1,:), 'MarkerEdgeColor' ,'k','markerfacealpha',0.2,'markeredgealpha',0.2);hold on
+scatter(XScore(Y(:,1)==0,1),XScore(Y(:,1)==0,2),10,'o','markerfacecolor',palette(2,:), 'MarkerEdgeColor' ,'k','markerfacealpha',0.2,'markeredgealpha',0.2);    
 
 xlabel(append('LV1',' (X_{var} = ',num2str(100*PCTVAR(1,1),'%.0f'),'%, Y_{var} = ',num2str(100*PCTVAR(2,1),'%.0f'),'%)')); 
     ylabel(append('LV2',' (X_{var} = ',num2str(100*PCTVAR(1,2),'%.0f'),'%, Y_{var} = ',num2str(100*PCTVAR(2,2),'%.0f'),'%)')); 

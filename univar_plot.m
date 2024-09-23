@@ -10,6 +10,7 @@ for i = 1:width(Y)
  Ygroup(Y(:,i)==1)=i; 
 end 
 Ygroup = Ygroup';
+% Ygroup=Y;
 
 for n = 1:nplots
     nexttile
@@ -46,6 +47,11 @@ for n = 1:nplots
         p(:,n)=c(:,6);
         pAdj = ''; indAccepted = '';
     end        
+
+        %     [~,~,stats]=kruskalwallis(X(:,n),Ygroup,'off');
+        % c=multcompare(stats,'CriticalValueType','dunn-sidak','Display','off');
+        % p(:,n)=c(:,6);
+        % pAdj = ''; indAccepted = '';
 
  end
 

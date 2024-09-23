@@ -47,10 +47,10 @@ if strcmp(PLSR_or_PLSDA,'PLSDA')
     mean_group2 = mean(XScore(Y(:,1)==0));
     
     if mean_group1<mean_group2
-        color_neg = palette(2,:); color_pos = palette(1,:);
+        color_neg = palette(1,:); color_pos = palette(2,:);
     
     else
-        color_pos = palette(2,:); color_neg = palette(1,:);
+        color_pos = palette(1,:); color_neg = palette(2,:);
     
     end
 end

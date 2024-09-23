@@ -35,7 +35,7 @@ PLSR_or_PLSDA = 'PLSDA';
 if model.ncomp == 2
 
 %% loadings bar graph 
-loadings_plot(model.XLoading,model.varNames,1,palette,'PLSDA');
+% loadings_plot(model.XLoading,model.varNames,1,palette,'PLSDA');
 
 %% scores plot (check name of model.CV_acc)
 PLSR_or_PLSDA = 'PLSDA';

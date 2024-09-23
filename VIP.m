@@ -40,6 +40,7 @@ end
 which_LV = 1;
 
 %Define the colors to use for pos/neg loadings.
+<<<<<<< Updated upstream
 color_pos = palette(1,:); color_neg = palette(2,:);
 
 if strcmp(PLSR_or_PLSDA,'PLSDA')
@@ -55,6 +56,9 @@ if strcmp(PLSR_or_PLSDA,'PLSDA')
     end
 end
 
+=======
+color_pos = palette(2,:); color_neg = palette(1,:);
+>>>>>>> Stashed changes
 figure;
 
 %Plot dotted lines at X = +/-1, the threshold for determining VIP score

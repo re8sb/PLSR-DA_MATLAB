@@ -43,15 +43,15 @@ function model = PLSR_main(X,Y,ncomp,varNames,LASSO,ortho,cv_style,nperm,yDataLa
 
 close all;
 %% Import data and optional LASSO-feature selection
-X_pre_z = X; %X_pre_z is pre z-scored X data
+X_pre_z_total = X; %X_pre_z is pre z-scored X data
 X = zscore(X); Y = zscore(Y);
 
 varNames_old = varNames;
 clear lasso_feat b fitInfo minMSE minMSE_Lambda
 if strcmp(LASSO,'yes')
    lasso_feat = [];
-    for n = 1:10
-        [b,fitInfo] = lasso(X,Y(:,1),'CV',10);
+    for n = 1:100
+        [b,fitInfo] = lasso(X,Y,'CV',5);%10
         [minMSE(n),idx] = min(fitInfo.MSE);
         lasso_feat(:,n) = b(:,idx);
     end
@@ -59,7 +59,11 @@ if strcmp(LASSO,'yes')
     varNames = varNames_old(any(lasso_feat(:,idx),2));
     [~,ia,~] = intersect(varNames_old,varNames);
     X = X(:,ia); %subset X to only contain LASSO-selected features
-    X_pre_z = X_pre_z(:,ia); %subset X_pre_z to only LASSO-selected features
+    X_pre_z = X_pre_z_total(:,ia); %subset X_pre_z to only LASSO-selected features
+    varNames = varNames_old(ia);
+    model.X_pre_z_total = X_pre_z_total;
+    model.X_pre_z = X_pre_z;
+    model.varNames_old = varNames_old;
 end
 %% Orthogonal Projection to Latent Structures (OPLS)
 if strcmp(ortho,'yes')
@@ -111,6 +115,6 @@ model.varNames = varNames;
 model.stats = stats;
 
 %% Plot results
-PLSR_plot(model,yDataLabel)
+PLSR_plot(model,yDataLabel,LASSO)
 end
 

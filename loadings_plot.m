@@ -37,7 +37,7 @@ ytickangle(45)
 %loadings.
 elseif nLVs == 1
     if strcmp(PLSR_or_PLSDA,'PLSR')
-        XL_LV1 = sortrows(table(varNames,XLoading(:,1)'),'Var2','ascend');
+        XL_LV1 = sortrows(table(varNames,XLoading(:,1)),'Var2','ascend');
     elseif strcmp(PLSR_or_PLSDA,'PLSDA')
         XL_LV1 = sortrows(table(varNames,XLoading(:,1)),'Var2','ascend');
     end

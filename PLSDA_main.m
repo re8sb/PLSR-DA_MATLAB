@@ -58,7 +58,6 @@ if strcmp(LASSO,'yes')
 
 varNames_old = varNames;
 clear lasso_feat b fitInfo minMSE minMSE_Lambda
-for n = 1:10
 for n = 1:100
     n
     [b,fitInfo] = lasso(X,Y(:,1),'CV',10);

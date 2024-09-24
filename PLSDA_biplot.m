@@ -6,7 +6,7 @@ function PLSDA_biplot(XScore,PCTVAR,Y,categories,CV_accuracy,p_perm,palette,XLoa
     xline(0,'handlevisibility','off');yline(0,'handlevisibility','off'); hold on
 
     for m = 1:width(Y)
-        scatter(XScore(Y(:,m)==1,1),XScore(Y(:,m)==1,2),50,mkrs{m},'markerfacecolor',palette(m,:), 'MarkerEdgeColor' ,'k','markerfacealpha',0.5,'markeredgealpha',1);    
+        scatter(XScore(Y(:,m)==1,1),XScore(Y(:,m)==1,2),50,mkrs{m},'markerfacecolor',palette(m,:), 'MarkerEdgeColor' ,'k','markerfacealpha',0.85,'markeredgealpha',1);    
     end
         %%%%%% here, trying to figure out scaling
 

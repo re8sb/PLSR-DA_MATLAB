@@ -1,5 +1,6 @@
-function PLSR_plot(model,YDataLabel)
 function PLSR_plot(model,YDataLabel,LASSO)
+% function PLSR_plot(model,YDataLabel)
+
 %% PLSR plotting, Dolatshahi Lab
 %% Author: Remziye Erdogan, 6/25/2021
 %INPUT:

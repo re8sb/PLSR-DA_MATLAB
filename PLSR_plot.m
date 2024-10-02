@@ -1,5 +1,5 @@
+
 function [vipScores,vipNames,rho,pval]=PLSR_plot(model,YDataLabel,LASSO)
-% function PLSR_plot(model,YDataLabel)
 
 %% PLSR plotting, Dolatshahi Lab
 %% Author: Remziye Erdogan, 6/25/2021
@@ -30,12 +30,12 @@ mincolor = [249 119 72]/255; maxcolor = [249 240 172]/255;
 maxcolor = [119 104 250]/255; mincolor = [224 222 255]/255;
 
 palette = [mincolor;maxcolor];
-% %% scores plot 
-% PLSR_or_PLSDA = 'PLSR';
-% scores_plot(PLSR_or_PLSDA,model.XScore,model.PCTVAR,model.Ydata,YDataLabel,model.Q2,model.p_perm,[],palette);
-% 
-% %% VIP score bar graph
-% VIP(model.stats,model.XLoading,model.YLoading,model.XScore,model.varNames,palette,'all',[],[],'PLSR');
+%% scores plot 
+PLSR_or_PLSDA = 'PLSR';
+scores_plot(PLSR_or_PLSDA,model.XScore,model.PCTVAR,model.Ydata,YDataLabel,model.Q2,model.p_perm,[],palette);
+
+%% VIP score bar graph
+VIP(model.stats,model.XLoading,model.YLoading,model.XScore,model.varNames,palette,'all',[],[],'PLSR');
 
 %% loadings bar graph 
 % loadings_plot(model.XLoading,model.varNames,1,palette,'PLSR');

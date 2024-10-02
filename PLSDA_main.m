@@ -65,8 +65,6 @@ for n = 1:100
     lasso_feat(:,n) = b(:,idx);
 %     lasso_feat = [lasso_feat; varNames(any(b(:,idx),2))];
 end
-[~,idx]=min(minMSE);
-varNames = varNames_old(any(lasso_feat(:,idx),2));
 % [~,idx]=min(minMSE);
 % varNames = varNames_old(any(lasso_feat(:,idx),2));
 varNames = varNames_old(sum(logical(lasso_feat),2)>=0.9*width(lasso_feat));

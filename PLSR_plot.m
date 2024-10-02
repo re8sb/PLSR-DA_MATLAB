@@ -35,7 +35,7 @@ PLSR_or_PLSDA = 'PLSR';
 scores_plot(PLSR_or_PLSDA,model.XScore,model.PCTVAR,model.Ydata,YDataLabel,model.Q2,model.p_perm,[],palette);
 
 %% VIP score bar graph
-VIP(model.stats,model.XLoading,model.YLoading,model.XScore,model.varNames,palette,'all',[],[],'PLSR');
+[vipScores,vipNames]=VIP(model.stats,model.XLoading,model.YLoading,model.XScore,model.varNames,palette,'all',[],[],'PLSR');
 
 %% loadings bar graph 
 % loadings_plot(model.XLoading,model.varNames,1,palette,'PLSR');

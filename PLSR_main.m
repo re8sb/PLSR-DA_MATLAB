@@ -50,7 +50,7 @@ varNames_old = varNames;
 clear lasso_feat b fitInfo minMSE minMSE_Lambda
 if strcmp(LASSO,'yes')
 
-[varNames,ia] = run_elastic_net(X, Y, varNames_old, 'minMSE', 1, 500, 0.5, cv_style{2});
+[varNames,ia] = run_elastic_net(X, Y, varNames_old, 'minMSE', 1, 1000, 0.25, cv_style{2});
    % 
    % lasso_feat = [];
    %  for n = 1:100

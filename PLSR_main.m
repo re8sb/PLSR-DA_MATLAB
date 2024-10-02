@@ -62,8 +62,13 @@ if strcmp(LASSO,'yes')
     X_pre_z = X_pre_z_total(:,ia); %subset X_pre_z to only LASSO-selected features
     varNames = varNames_old(ia);
     model.X_pre_z_total = X_pre_z_total;
-    model.X_pre_z = X_pre_z;
     model.varNames_old = varNames_old;
+    model.X_pre_z = X_pre_z;
+    % b=1:width(X_pre_z_total); [~,ib]=setdiff(b,ia);
+    % model.varNames_old = varNames_old(ib);
+    % model.X_pre_z_total = X_pre_z_total(:,ib);
+    % model.ia=ia;
+    % model.ib=ib;
 end
 %% Orthogonal Projection to Latent Structures (OPLS)
 if strcmp(ortho,'yes')
@@ -115,6 +120,6 @@ model.varNames = varNames;
 model.stats = stats;
 
 %% Plot results
-PLSR_plot(model,yDataLabel,LASSO)
+[model.vipScores,model.vipNames,model.rho,model.pval]=PLSR_plot(model,yDataLabel,LASSO)
 end
 

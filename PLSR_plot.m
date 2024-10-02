@@ -26,26 +26,15 @@ function PLSR_plot(model,YDataLabel,LASSO)
 % mincolor = [249 119 72]/255; maxcolor = [249 240 172]/255;
 maxcolor = [252 252 245]/255; mincolor = [124 80 80]/255;
 mincolor = [249 119 72]/255; maxcolor = [249 240 172]/255;
-palette = [mincolor;maxcolor];
-% palette = [87 25 255;255 166 234]/255;
-%% scores plot 
-PLSR_or_PLSDA = 'PLSR';
-scores_plot(PLSR_or_PLSDA,model.XScore,model.PCTVAR,model.Ydata,YDataLabel,model.Q2,model.p_perm,[],palette);
-
-%% loadings bar graph 
-% loadings_plot(model.XLoading,model.varNames,1,palette,'PLSR');
-%% VIP score bar graph
-VIP(model.stats,model.XLoading,model.YLoading,model.XScore,model.varNames,palette,'all',[],[],'PLSR');
-
 maxcolor = [119 104 250]/255; mincolor = [224 222 255]/255;
-% maxcolor = [249 119 72]/255; mincolor = [249 240 172]/255;
 
 palette = [mincolor;maxcolor];
-
-% figure; ax = gca;
-% imagesc(heatmap_data);
-% colormap(cmap); colorbar('Ticks',[])
-% colorbar('Ticks',[0.7 1.3],'TickLabels',{'Decrease','Increase'});
+% %% scores plot 
+% PLSR_or_PLSDA = 'PLSR';
+% scores_plot(PLSR_or_PLSDA,model.XScore,model.PCTVAR,model.Ydata,YDataLabel,model.Q2,model.p_perm,[],palette);
+% 
+% %% VIP score bar graph
+% VIP(model.stats,model.XLoading,model.YLoading,model.XScore,model.varNames,palette,'all',[],[],'PLSR');
 
 %% scores plot 
 PLSR_or_PLSDA = 'PLSR';
@@ -53,7 +42,7 @@ scores_plot(PLSR_or_PLSDA,model.XScore,model.PCTVAR,model.Ydata,YDataLabel,model
 %% loadings bar graph 
 % loadings_plot(model.XLoading,model.varNames,1,palette,'PLSR');
 %% VIP score bar graph
-VIP(model.stats,model.XLoading,model.YLoading,model.XScore,model.varNames,palette,'all',[]);
+VIP(model.stats,model.XLoading,model.YLoading,model.XScore,model.varNames,palette,'all',[],[],PLSR_or_PLSDA);
 %% Correlates heatmap
 if strcmp(LASSO,'yes')
     [model.rho,model.rho_pval]=correlatesHeatmap(model.X_pre_z_total,model.X_pre_z,model.varNames_old,model.varNames)

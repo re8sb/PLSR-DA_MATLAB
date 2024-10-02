@@ -49,21 +49,26 @@ X = zscore(X); Y = zscore(Y);
 varNames_old = varNames;
 clear lasso_feat b fitInfo minMSE minMSE_Lambda
 if strcmp(LASSO,'yes')
-   lasso_feat = [];
-    for n = 1:100
-        [b,fitInfo] = lasso(X,Y,'CV',5);%10
-        [minMSE(n),idx] = min(fitInfo.MSE);
-        lasso_feat(:,n) = b(:,idx);
-    end
-    [~,idx]=min(minMSE);
-    varNames = varNames_old(any(lasso_feat(:,idx),2));
-    [~,ia,~] = intersect(varNames_old,varNames);
+
+[varNames,ia] = run_elastic_net(X, Y, varNames_old, 'minMSE', 1, 500, 0.5, cv_style{2});
+   % 
+   % lasso_feat = [];
+   %  for n = 1:100
+   %      [b,fitInfo] = lasso(X,Y,'CV',5);%10
+   %      [minMSE(n),idx] = min(fitInfo.MSE);
+   %      lasso_feat(:,n) = b(:,idx);
+   %  end
+   %  [~,idx]=min(minMSE);
+   %  varNames = varNames_old(any(lasso_feat(:,idx),2));
+   %  [~,ia,~] = intersect(varNames_old,varNames);
     X = X(:,ia); %subset X to only contain LASSO-selected features
     X_pre_z = X_pre_z_total(:,ia); %subset X_pre_z to only LASSO-selected features
-    varNames = varNames_old(ia);
+    % X = X(:,elastic_idx); 
+    % X_pre_z = X_pre_z_total(:,elastic_idx); %subset X_pre_z to only LASSO-selected features
     model.X_pre_z_total = X_pre_z_total;
     model.X_pre_z = X_pre_z;
     model.varNames_old = varNames_old;
+    model.lasso_idx = ia;
 end
 %% Orthogonal Projection to Latent Structures (OPLS)
 if strcmp(ortho,'yes')

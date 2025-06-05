@@ -48,31 +48,48 @@ function model = PLSDA_main(X,Y,ncomp,varNames,LASSO,ortho,cv_style,nperm,catego
 
 close all;
 %% Import data and optional LASSO feature selection
-    X_pre_z = X; %X_pre_z is pre z-scored X data
-    X = zscore(X);
+X_pre_z_total = X; %X_pre_z is pre z-scored X data
+X_pre_z = X; %X_pre_z is pre z-scored X data
 
-if strcmp(LASSO,'yes')
-% Perform LASSO feature selection.
-% Run a 10-fold cross validated LASSO regression and save the feature set
-% with the lowest mean squared error.
-
+X = zscore(X);
 varNames_old = varNames;
+
 clear lasso_feat b fitInfo minMSE minMSE_Lambda
-for n = 1:100
-    n
-    [b,fitInfo] = lasso(X,Y(:,1),'CV',10);
-    [minMSE(n),idx] = min(fitInfo.MSE);
-    lasso_feat(:,n) = b(:,idx);
-%     lasso_feat = [lasso_feat; varNames(any(b(:,idx),2))];
+if strcmp(LASSO,'yes')
+
+[varNames,ia] = run_elastic_net(X, Y, varNames_old, 'minMSE', 1, 500, 0.95, cv_style{2});
+
+    X = X(:,ia); %subset X to only contain LASSO-selected features
+    X_pre_z = X_pre_z_total(:,ia); %subset X_pre_z to only LASSO-selected features
+
+    model.X_pre_z_total = X_pre_z_total;
+    model.varNames_old = varNames_old;
+    model.lasso_idx = ia;
+    model.X_pre_z = X_pre_z;
+
 end
-% [~,idx]=min(minMSE);
-% varNames = varNames_old(any(lasso_feat(:,idx),2));
-varNames = varNames_old(sum(logical(lasso_feat),2)>=0.9*width(lasso_feat));
-[~,ia,~] = intersect(varNames_old,varNames);
-varNames = varNames_old(ia); %reorders varNames to match order in X
-X = X(:,ia); %subset X to only contain LASSO-selected features
-X_pre_z = X_pre_z(:,ia); %subset X_pre_z to only LASSO-selected features
-end
+% if strcmp(LASSO,'yes')
+% % Perform LASSO feature selection.
+% % Run a 10-fold cross validated LASSO regression and save the feature set
+% % with the lowest mean squared error.
+% 
+% varNames_old = varNames;
+% clear lasso_feat b fitInfo minMSE minMSE_Lambda
+% for n = 1:100
+%     n
+%     [b,fitInfo] = lasso(X,Y(:,1),'CV',10);
+%     [minMSE(n),idx] = min(fitInfo.MSE);
+%     lasso_feat(:,n) = b(:,idx);
+% %     lasso_feat = [lasso_feat; varNames(any(b(:,idx),2))];
+% end
+% % [~,idx]=min(minMSE);
+% % varNames = varNames_old(any(lasso_feat(:,idx),2));
+% varNames = varNames_old(sum(logical(lasso_feat),2)>=0.9*width(lasso_feat));
+% [~,ia,~] = intersect(varNames_old,varNames);
+% varNames = varNames_old(ia); %reorders varNames to match order in X
+% X = X(:,ia); %subset X to only contain LASSO-selected features
+% X_pre_z = X_pre_z(:,ia); %subset X_pre_z to only LASSO-selected features
+% end
 %% Orthogonal Projection to Latent Structures (OPLS)
 if strcmp(ortho,'yes')
     tol = 0.01;
@@ -99,7 +116,7 @@ TSS = sum((Y-mean(Y)).^2);
 % Prediction accuracy based on cross validation
 
 % Q2 = [0 1-length(Y)*MSE(2,2:end)/TSS]; [Q2max,Q2idx] = max(Q2);
-Q2 = [0 1-length(Y)*MSE(2,2:end)/TSS]; [Q2max,Q2idx] = max(Q2);
+% Q2 = [0 1-length(Y)*MSE(2,2:end)/TSS]; [Q2max,Q2idx] = max(Q2);
 
 % Performance
 R2 = [0 cumsum(PCTVAR(2,:))];
@@ -108,11 +125,17 @@ R2 = [0 cumsum(PCTVAR(2,:))];
 %predicted Y categories based on the cross-validated model
 Y_predicted = [ones(size(X,1),1) X]*BETA;
 %if prediction < 0.5, make it a logical 0; if > 0.5, make it a logical 1
-Y_predicted(Y_predicted<0.5) = 0; Y_predicted(Y_predicted>=0.5) = 1;
+% Y_predicted(Y_predicted<0.5) = 0; Y_predicted(Y_predicted>=0.5) = 1;
+[~,idx]=max(Y_predicted,[],2);
+Y_predicted_new = zeros(size(Y_predicted));
+
+for i = 1:height(Y_predicted)
+    Y_predicted_new(i,idx(i))=1;
+end
 
 correct = 0;
 for i = 1:length(Y)
-    if Y(i) == Y_predicted(i)
+    if Y(i,:) == Y_predicted_new(i,:)
         correct = correct + 1; %If prediction and actual label match, increase count of "correct" assignments.
     end
 end

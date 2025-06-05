@@ -2,7 +2,9 @@ function PLSDA_biplot(XScore,PCTVAR,Y,categories,CV_accuracy,p_perm,palette,XLoa
     % this function makes a scores/loadings biplot for multi-class PLSDA
     % models.
     figure; tiledlayout(1,2); nexttile
-    mkrs = {'o','s','^','d',};
+    % mkrs = {'o','s','^','d',};
+        mkrs = {'o','o','o','o'};
+
     xline(0,'handlevisibility','off');yline(0,'handlevisibility','off'); hold on
 
     for m = 1:width(Y)

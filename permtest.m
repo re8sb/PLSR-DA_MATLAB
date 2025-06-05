@@ -78,13 +78,26 @@ if strcmp(PLSR_or_PLSDA,'PLSDA')
         clear XLoading YLoading XScore YScore BETA PCTVAR MSE stats Q2;
         [XLoading,YLoading,XScore,YScore,BETA,PCTVAR,MSE,stats] = plsregress(X,Y_rand,ncomp,'cv',cvp);
         Y_predicted = [ones(size(X,1),1) X]*BETA;
-        Y_predicted(Y_predicted<0.5) = 0; Y_predicted(Y_predicted>=0.5) = 1;
+        % Y_predicted(Y_predicted<0.5) = 0; Y_predicted(Y_predicted>=0.5) = 1;
+        correct = 0;
+        [~,idx]=max(Y_predicted,[],2);
+        Y_predicted_new = zeros(size(Y_predicted));
+        
+        for i = 1:height(Y_predicted)
+            Y_predicted_new(i,idx(i))=1;
+        end
+        
         correct = 0;
         for i = 1:length(Y)
-            if Y_rand(i) == Y_predicted(i)
-                correct = correct + 1;
+            if Y_rand(i,:) == Y_predicted_new(i,:)
+                correct = correct + 1; %If prediction and actual label match, increase count of "correct" assignments.
             end
         end
+        % for i = 1:length(Y)
+        %     if Y_rand(i) == Y_predicted(i)
+        %         correct = correct + 1;
+        %     end
+        % end
         CV_accuracy_rand(n) = correct/length(Y_rand)*100; %correct classification rate
     end
     metric = CV_accuracy; metric_rand = CV_accuracy_rand;

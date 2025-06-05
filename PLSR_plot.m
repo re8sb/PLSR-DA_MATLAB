@@ -23,11 +23,22 @@ function [vipScores,vipNames,rho,pval]=PLSR_plot(model,YDataLabel,LASSO)
 % palette for MATLAB COPPER colormap
 % palette =[90 66 56;255 190 143]/255;
 
+% pretty orange
 % mincolor = [249 119 72]/255; maxcolor = [249 240 172]/255;
-maxcolor = [252 252 245]/255; mincolor = [124 80 80]/255;
-mincolor = [249 119 72]/255; maxcolor = [249 240 172]/255;
+% maxcolor = [252 252 245]/255; mincolor = [124 80 80]/255;
+% maxcolor = [249 119 72]/255; mincolor = [249 240 172]/255;
 
-maxcolor = [119 104 250]/255; mincolor = [224 222 255]/255;
+% maxcolor = [119 104 250]/255; mincolor = [224 222 255]/255;
+% maxcolor = [204 102 255]/255; mincolor = [224 222 255]/255;
+% maxcolor = [119 104 250]/255; mincolor = [224 222 255]/255;
+%white and yellow
+% maxcolor = [255 255 0]/255; mincolor = [255 255 255]/255;
+% blue to yellow
+% maxcolor =  [255 255 0]/255; mincolor = [135 205 233]/255;
+%white and orange
+% mincolor = [255 255 255]/255; maxcolor = [249 119 72]/255;
+% blue to orange
+maxcolor =  [249 119 72]/255; mincolor = [135 205 233]/255;
 
 palette = [mincolor;maxcolor];
 %% scores plot 
@@ -43,6 +54,8 @@ scores_plot(PLSR_or_PLSDA,model.XScore,model.PCTVAR,model.Ydata,YDataLabel,model
 %% Correlates heatmap
 if strcmp(LASSO,'yes')
     [rho,pval]=correlatesHeatmap(model.X_pre_z_total,model.X_pre_z,model.varNames_old,model.varNames)
+else
+    rho=nan; pval=nan;
 end
 
 end

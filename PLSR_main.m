@@ -44,13 +44,13 @@ function model = PLSR_main(X,Y,ncomp,varNames,LASSO,ortho,cv_style,nperm,yDataLa
 close all;
 %% Import data and optional LASSO-feature selection
 X_pre_z_total = X; %X_pre_z is pre z-scored X data
-X = zscore(X); Y = zscore(Y);
+X = zscore(X); %Y = zscore(Y);
 
 varNames_old = varNames;
 clear lasso_feat b fitInfo minMSE minMSE_Lambda
 if strcmp(LASSO,'yes')
 
-[varNames,ia] = run_elastic_net(X, Y, varNames_old, 'minMSE', 1, 1000, 0.25, cv_style{2});
+[varNames,ia] = run_elastic_net(X, Y, varNames_old, 'minMSE', 0.1, 200, 0.7, cv_style{2});
    % 
    % lasso_feat = [];
    %  for n = 1:100
@@ -73,7 +73,7 @@ if strcmp(LASSO,'yes')
 end
 %% Orthogonal Projection to Latent Structures (OPLS)
 if strcmp(ortho,'yes')
-    tol = 0.00001;
+    tol = 0.1;
     [X_filt] = OPLS(X,Y,tol);
     X = X_filt; %set X as the orthogonalized/filtered data
 end
@@ -121,6 +121,10 @@ model.varNames = varNames;
 model.stats = stats;
 
 %% Plot results
+if strcmp(LASSO,'yes')
 [model.vipScores,model.vipNames,model.rho,model.pval]=PLSR_plot(model,yDataLabel,LASSO)
+else
+[model.vipScores,model.vipNames,model.rho,model.pval]=PLSR_plot(model,yDataLabel,LASSO)
+end 
 end
 

@@ -40,7 +40,7 @@ end
 which_LV = 1;
 
 %Define the colors to use for pos/neg loadings.
-color_pos = palette(1,:); color_neg = palette(2,:);
+color_pos = palette(2,:); color_neg = palette(1,:);
 
 if strcmp(PLSR_or_PLSDA,'PLSDA')
     mean_group1 = mean(XScore(Y(:,1)==1));
